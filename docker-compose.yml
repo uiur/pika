@@ -4,12 +4,45 @@ services:
     image: postgres
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+
   web:
     build: .
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
       - .:/app
+      - shared:/shared
     ports:
       - "3000:3000"
     depends_on:
       - db
+
+  btcd:
+    image: btcd
+    build:
+      context: docker/btcd/
+    volumes:
+      - shared:/shared
+      - blockchain:/data
+    environment:
+      NETWORK: regtest
+      DEBUG: info
+
+  lnd:
+    build:
+      context: docker/lnd/
+    volumes:
+      - shared:/shared
+    ports:
+      - 10009:10009
+    environment:
+      NETWORK: regtest
+      DEBUG: debug
+    depends_on:
+      - btcd
+
+volumes:
+  shared:
+    driver: local
+
+  blockchain:
+    driver: local
