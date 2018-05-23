@@ -49,7 +49,7 @@ if [[ "$CHAIN" == "litecoin" ]]; then
     BACKEND="ltcd"
 fi
 
-mkdir -p /shared/lnd
+mkdir -p /lnd_rpc
 
 exec lnd \
     --noencryptwallet \
@@ -57,15 +57,15 @@ exec lnd \
     "--$CHAIN.active" \
     "--$CHAIN.$NETWORK" \
     "--$CHAIN.node"="btcd" \
-    "--$BACKEND.rpccert"="/shared/rpc/rpc.cert" \
+    "--$BACKEND.rpccert"="/btcd_rpc/rpc.cert" \
     "--$BACKEND.rpchost"="btcd" \
     "--$BACKEND.rpcuser"="$RPCUSER" \
     "--$BACKEND.rpcpass"="$RPCPASS" \
     --rpclisten=0.0.0.0:10009 \
     --restlisten=0.0.0.0:8080 \
-    --tlscertpath=/shared/lnd/tls.cert \
-    --tlskeypath=/shared/lnd/tls.key \
-    --tlsextradomain=lnd \
-    --adminmacaroonpath=/shared/lnd/admin.macaroon \
+    --tlscertpath=/lnd_rpc/tls.cert \
+    --tlskeypath=/lnd_rpc/tls.key \
+    --tlsextradomain="$HOSTNAME" \
+    --adminmacaroonpath=/lnd_rpc/admin.macaroon \
     --debuglevel="$DEBUG" \
     "$@"

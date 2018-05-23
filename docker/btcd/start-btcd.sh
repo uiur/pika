@@ -44,7 +44,7 @@ RPCPASS=$(set_default "$RPCPASS" "devpass")
 DEBUG=$(set_default "$DEBUG" "info")
 NETWORK=$(set_default "$NETWORK" "simnet")
 
-mkdir -p /shared/rpc
+mkdir -p /btcd_rpc/
 
 PARAMS=$(echo \
     "--$NETWORK" \
@@ -53,8 +53,8 @@ PARAMS=$(echo \
     "--rpcpass=$RPCPASS" \
     "--datadir=/data" \
     "--logdir=/data" \
-    "--rpccert=/shared/rpc/rpc.cert" \
-    "--rpckey=/shared/rpc/rpc.key" \
+    "--rpccert=/btcd_rpc/rpc.cert" \
+    "--rpckey=/btcd_rpc/rpc.key" \
     "--rpclisten=0.0.0.0" \
     "--txindex"
 )

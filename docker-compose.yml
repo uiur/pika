@@ -7,10 +7,11 @@ services:
 
   web:
     build: .
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/app
-      - shared:/shared
+      - lnd_0_rpc:/lnd_0_rpc
+      - lnd_1_rpc:/lnd_1_rpc
     ports:
       - "3000:3000"
     depends_on:
@@ -21,27 +22,56 @@ services:
     build:
       context: docker/btcd/
     volumes:
-      - shared:/shared
+      - btcd_rpc:/btcd_rpc
       - blockchain:/data
     environment:
       NETWORK: regtest
       DEBUG: info
+      MINING_ADDRESS:
 
-  lnd:
+  lnd_0:
+    hostname: lnd_0
     build:
       context: docker/lnd/
     volumes:
-      - shared:/shared
-    ports:
-      - 10009:10009
+      - btcd_rpc:/btcd_rpc
+      - lnd_0_rpc:/lnd_rpc
+      - lnd_0:/root/.lnd/
     environment:
       NETWORK: regtest
       DEBUG: debug
     depends_on:
       - btcd
 
+  lnd_1:
+    hostname: lnd_1
+    build:
+      context: docker/lnd/
+    volumes:
+      - btcd_rpc:/btcd_rpc
+      - lnd_1_rpc:/lnd_rpc
+      - lnd_1:/root/.lnd/
+    environment:
+      NETWORK: regtest
+      DEBUG: debug
+    depends_on:
+      - btcd
+
+
 volumes:
-  shared:
+  btcd_rpc:
+    driver: local
+
+  lnd_0:
+    driver: local
+
+  lnd_0_rpc:
+    driver: local
+
+  lnd_1:
+    driver: local
+
+  lnd_1_rpc:
     driver: local
 
   blockchain:
