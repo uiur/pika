@@ -1,7 +1,8 @@
 'use strict'
 
-import Frisbee from 'frisbee'
-import './main.jsx'
+// @ts-ignore
+import * as Frisbee from 'frisbee'
+import './main.tsx'
 
 const api = new Frisbee({
   baseURI: 'http://localhost:3000'
