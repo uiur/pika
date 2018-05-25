@@ -5,6 +5,7 @@
   "author": "Kazato Sugimoto",
   "license": "MIT",
   "devDependencies": {
+    "frisbee": "^2.0.4",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.4"
   },
