@@ -1,0 +1,14 @@
+{
+  "name": "pika",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kazato Sugimoto",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.4"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Getting Started Example",
+  "version": "1.0",
+  "description": "Build an Extension!",
+  "manifest_version": 2,
+  "permissions": ["<all_urls>", "https://github.com/", "activeTab"],
+  "browser_action": {
+    "default_title": "test",
+    "default_icon": "icon-128.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
+}
