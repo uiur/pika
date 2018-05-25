@@ -47,4 +47,4 @@ bower.json
 # Ignore node_modules
 node_modules/
 
-client/dist/bundle.js
+client/dist/
