@@ -5,11 +5,18 @@
   "author": "Kazato Sugimoto",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-react": "^6.24.1",
     "frisbee": "^2.0.4",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.4"
   },
   "scripts": {
     "build": "webpack"
+  },
+  "dependencies": {
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
   }
 }

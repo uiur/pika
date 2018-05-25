@@ -25,7 +25,7 @@ services:
       - btcd_rpc:/btcd_rpc
       - blockchain:/data
     environment:
-      NETWORK: regtest
+      NETWORK: simnet
       DEBUG: info
       MINING_ADDRESS:
 
@@ -37,8 +37,10 @@ services:
       - btcd_rpc:/btcd_rpc
       - lnd_0_rpc:/lnd_rpc
       - lnd_0:/root/.lnd/
+
+      - lnd_1_rpc:/lnd_1_rpc
     environment:
-      NETWORK: regtest
+      NETWORK: simnet
       DEBUG: debug
     depends_on:
       - btcd
@@ -51,8 +53,10 @@ services:
       - btcd_rpc:/btcd_rpc
       - lnd_1_rpc:/lnd_rpc
       - lnd_1:/root/.lnd/
+
+      - lnd_0_rpc:/lnd_0_rpc
     environment:
-      NETWORK: regtest
+      NETWORK: simnet
       DEBUG: debug
     depends_on:
       - btcd
