@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: ['./src/index.tsx', './src/index.scss'],
   devtool: "source-map",
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -19,7 +19,22 @@ module.exports = {
       { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].css"
+            }
+          },
+          "extract-loader",
+          "css-loader",
+          "sass-loader"
+        ]
+    }
     ]
   }
 }
