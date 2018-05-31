@@ -38,4 +38,16 @@ class LndClient
   def self.wallet_balance
     shared.wallet_balance(Lnrpc::WalletBalanceRequest.new)
   end
+
+  def self.decode_pay_req(pay_req)
+    shared.decode_pay_req(Lnrpc::PayReqString.new(pay_req: pay_req))
+  end
+
+  def self.pay(pay_req)
+    request = Lnrpc::SendRequest.new(
+      payment_request: pay_req
+    )
+
+    shared.send_payment_sync(request)
+  end
 end

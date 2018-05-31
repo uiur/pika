@@ -1,15 +1,22 @@
+require 'lnd_client'
+
 class PaymentsController < ApplicationController
+  before_action :require_account
+
   def create
-    client = LndClient.shared
+    data = LndClient.decode_pay_req(params[:payment_request])
+    amount = data['num_satoshis']
+    if current_account.balance < amount
+      return render json: { error: 'balance is not enough' }, status: :unprocessable_entity
+    end
 
-    request = Lnrpc::SendRequest.new(
-      payment_request: params[:payment_request]
-    )
+    res = nil
+    ActiveRecord::Base.transaction do
+      current_account.update!(balance: current_account.balance - amount)
+      res = LndClient.pay(params[:payment_request])
+    end
 
-    res = client.send_payment_sync(request)
-
-    render json: {
-      error: res.payment_error
-    }
+    # error: res.payment_error
+    render json: {}, status: :ok
   end
 end

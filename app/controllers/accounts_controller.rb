@@ -8,14 +8,4 @@ class AccountsController < ApplicationController
       render json: @account.errors, status: :unprocessable_entity
     end
   end
-
-  def generate_token(account)
-    JWT.encode(
-      {
-        id: account.id
-      },
-      Rails.application.secrets.jwt_secret,
-      'HS512'
-    )
-  end
 end
