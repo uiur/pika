@@ -12,6 +12,9 @@ gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 gem 'grpc'
+
+gem 'jwt'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -39,6 +42,7 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'rspec-json_matcher'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
