@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20180522103216) do
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
-    t.integer "balance"
+    t.integer "balance", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
