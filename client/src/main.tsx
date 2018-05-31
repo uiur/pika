@@ -10,6 +10,23 @@ interface State {
   paymentRequest: string
 }
 
+const TOKEN_KEY = 'pika_token'
+
+async function createAccount(): Promise<string> {
+  const res = await api.post('/accounts')
+  if (res.err) throw res.err
+
+  window.localStorage.setItem(TOKEN_KEY, res.body.token)
+
+  return res.body.token
+}
+
+async function getToken(): Promise<string> {
+  let token = window.localStorage.getItem(TOKEN_KEY)
+  if (token) return token
+  await createAccount()
+}
+
 export default class Main extends React.Component<{}, State> {
   constructor (props: {}) {
     super(props)
@@ -20,25 +37,25 @@ export default class Main extends React.Component<{}, State> {
     }
   }
 
-  componentDidMount () {
-    this.start()
-  }
-
-  async start () {
-    const res = await api.get('/wallet')
+  async componentDidMount () {
+    const token = await getToken()
+    const res = await api.get('/accounts/me', { headers: { 'Authorization': `Bearer ${token}` } })
     if (res.err) throw res.err
 
-    this.setState({ balance: 0.02 * SATOSHI || res.body.balance })
+    this.setState({ balance: res.body.balance })
   }
 
   async onClick () {
+    const token = await getToken()
+
     const res = await api.post('/payments', {
+      headers: { 'Authorization': `Bearer ${token}` },
       body: {
         payment_request: this.state.paymentRequest
       }
     })
 
-    if (res.err) throw res.err
+    console.log(res)
   }
 
   onChange (e: any) {
