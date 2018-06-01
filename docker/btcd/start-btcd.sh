@@ -15,43 +15,15 @@ return() {
     echo "$1"
 }
 
-# set_default function gives the ability to move the setting of default
-# env variable from docker file to the script thereby giving the ability to the
-# user override it durin container start.
-set_default() {
-    # docker initialized env variables with blank string and we can't just
-    # use -z flag as usually.
-    BLANK_STRING='""'
-
-    VARIABLE="$1"
-    DEFAULT="$2"
-
-    if [[ -z "$VARIABLE" || "$VARIABLE" == "$BLANK_STRING" ]]; then
-
-        if [ -z "$DEFAULT" ]; then
-            error "You should specify default variable"
-        else
-            VARIABLE="$DEFAULT"
-        fi
-    fi
-
-   return "$VARIABLE"
-}
-
-# Set default variables if needed.
-RPCUSER=$(set_default "$RPCUSER" "devuser")
-RPCPASS=$(set_default "$RPCPASS" "devpass")
-DEBUG=$(set_default "$DEBUG" "info")
-NETWORK=$(set_default "$NETWORK" "simnet")
-
-mkdir -p /btcd_rpc/
-
 PARAMS=$(echo \
-    # "--$NETWORK" \
+  "--rpcuser=$RPCUSER" \
+  "--rpcpass=$RPCPASS" \
+  --rpclisten=0.0.0.0 \
+  --rpccert=/rpc/rpc.cert \
+  --rpckey=/rpc/rpc.key
 )
 
-# Add user parameters to command.
-# PARAMS="$PARAMS $@"
+PARAMS="$PARAMS $@"
 
 # Print command and start bitcoin node.
 echo "Command: btcd $PARAMS"

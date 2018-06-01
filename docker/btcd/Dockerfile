@@ -4,5 +4,6 @@ RUN mkdir -p "/root/.btcd"
 
 RUN apk add --no-cache bash
 COPY ./btcd.conf /root/.btcd/btcd.conf
+COPY ./start-btcd.sh .
 
-CMD ["btcd"]
+ENTRYPOINT ["./start-btcd.sh"]
