@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: btcd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: btcd
+    spec:
+      containers:
+      - name: btcd
+        image: gcr.io/uiu-server/btcd
+        env:
+          - name: RPCUSER
+            valueFrom:
+              secretKeyRef:
+                name: btcd-rpc-user
+                key: user
+          - name: RPCPASS
+            valueFrom:
+              secretKeyRef:
+                name: btcd-rpc-user
+                key: password
+
+        ports:
+        - containerPort: 18333
+        - containerPort: 18334
+
+        volumeMounts:
+          - name: blockchain
+            mountPath: /data
+
+          - name: rpc
+            mountPath: /rpc
+            readOnly: true
+
+      volumes:
+        - name: rpc
+          secret:
+            secretName: btcd-rpc
+
+        - name: blockchain
+          gcePersistentDisk:
+            pdName: btcd-blockchain

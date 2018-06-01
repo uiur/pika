@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: btcd
+  labels:
+    app: btcd
+spec:
+  selector:
+    app: btcd
+  ports:
+  - protocol: TCP
+    port: 18333
+    targetPort: 18333
+  type: LoadBalancer
