@@ -1,13 +1,8 @@
 FROM lightningnetwork/btcd-alpine
 
-RUN mkdir -p "/btcd_rpc" "/root/.btcd" "/root/.btcctl"
-RUN touch "/root/.btcd/btcd.conf"
-
-RUN "/go/bin/gencerts" --host="*" --directory="/btcd_rpc" --force
-
-VOLUME ["/btcd_rpc"]
+RUN mkdir -p "/root/.btcd"
 
 RUN apk add --no-cache bash
-COPY ./start-btcd.sh .
+COPY ./btcd.conf /root/.btcd/btcd.conf
 
-ENTRYPOINT ["./start-btcd.sh"]
+CMD ["btcd"]

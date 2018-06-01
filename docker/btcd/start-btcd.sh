@@ -47,25 +47,11 @@ NETWORK=$(set_default "$NETWORK" "simnet")
 mkdir -p /btcd_rpc/
 
 PARAMS=$(echo \
-    "--$NETWORK" \
-    "--debuglevel=$DEBUG" \
-    "--rpcuser=$RPCUSER" \
-    "--rpcpass=$RPCPASS" \
-    "--datadir=/data" \
-    "--logdir=/data" \
-    "--rpccert=/btcd_rpc/rpc.cert" \
-    "--rpckey=/btcd_rpc/rpc.key" \
-    "--rpclisten=0.0.0.0" \
-    "--txindex"
+    # "--$NETWORK" \
 )
 
-# Set the mining flag only if address is non empty.
-if [[ -n "$MINING_ADDRESS" ]]; then
-    PARAMS="$PARAMS --miningaddr=$MINING_ADDRESS"
-fi
-
 # Add user parameters to command.
-PARAMS="$PARAMS $@"
+# PARAMS="$PARAMS $@"
 
 # Print command and start bitcoin node.
 echo "Command: btcd $PARAMS"
