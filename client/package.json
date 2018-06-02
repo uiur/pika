@@ -27,6 +27,7 @@
     "build": "webpack"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
   }

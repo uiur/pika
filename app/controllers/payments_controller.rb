@@ -12,6 +12,7 @@ class PaymentsController < ApplicationController
 
     res = nil
     ActiveRecord::Base.transaction do
+      # TODO: atomic update
       current_account.update!(balance: current_account.balance - amount)
       res = LndClient.pay(params[:payment_request])
     end
