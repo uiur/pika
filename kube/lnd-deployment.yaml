@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: lnd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: lnd
+    spec:
+      containers:
+      - name: lnd
+        image: gcr.io/uiu-server/lnd
+        imagePullPolicy: "Always"
+        env:
+          - name: RPCUSER
+            valueFrom:
+              secretKeyRef:
+                name: btcd-rpc-user
+                key: user
+          - name: RPCPASS
+            valueFrom:
+              secretKeyRef:
+                name: btcd-rpc-user
+                key: password
+        ports:
+          - containerPort: 9735 # peer
+
+        volumeMounts:
+          - name: rpc
+            mountPath: /rpc
+            readOnly: true
+
+          - name: lnd
+            mountPath: /root/.lnd
+
+      volumes:
+        - name: rpc
+          secret:
+            secretName: btcd-rpc
+
+        - name: lnd
+          gcePersistentDisk:
+            pdName: lnd

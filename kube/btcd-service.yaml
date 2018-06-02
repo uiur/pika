@@ -5,10 +5,15 @@ metadata:
   labels:
     app: btcd
 spec:
+  type: LoadBalancer
   selector:
     app: btcd
   ports:
-  - protocol: TCP
+  - name: wire
+    protocol: TCP
     port: 18333
     targetPort: 18333
-  type: LoadBalancer
+  - name: rpc
+    protocol: TCP
+    port: 18334
+    targetPort: 18334

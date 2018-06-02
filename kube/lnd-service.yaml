@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: lnd
+  labels:
+    app: lnd
+spec:
+  type: LoadBalancer
+  selector:
+    app: lnd
+  ports:
+  - name: peer
+    protocol: TCP
+    port: 9735
+    targetPort: 9735
