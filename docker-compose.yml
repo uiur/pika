@@ -26,9 +26,9 @@ services:
       - blockchain:/data
     environment:
       MINING_ADDRESS:
+      NETWORK: simnet
       RPCUSER: devuser
       RPCPASS: devpass
-      NETWORK: simnet
     command: ./start-btcd.sh --simnet --datadir=/data
 
   lnd_0:
@@ -36,14 +36,13 @@ services:
     build:
       context: docker/lnd/
     volumes:
-      - btcd_rpc:/btcd_rpc
-      - lnd_0_rpc:/lnd_rpc
+      - btcd_rpc:/rpc
       - lnd_0:/root/.lnd/
-
-      - lnd_1_rpc:/lnd_1_rpc
     environment:
       NETWORK: simnet
       DEBUG: debug
+      RPCUSER: devuser
+      RPCPASS: devpass
     depends_on:
       - btcd
 
@@ -52,17 +51,15 @@ services:
     build:
       context: docker/lnd/
     volumes:
-      - btcd_rpc:/btcd_rpc
-      - lnd_1_rpc:/lnd_rpc
+      - btcd_rpc:/rpc
       - lnd_1:/root/.lnd/
-
-      - lnd_0_rpc:/lnd_0_rpc
     environment:
       NETWORK: simnet
       DEBUG: debug
+      RPCUSER: devuser
+      RPCPASS: devpass
     depends_on:
       - btcd
-
 
 volumes:
   btcd_rpc:
@@ -71,13 +68,7 @@ volumes:
   lnd_0:
     driver: local
 
-  lnd_0_rpc:
-    driver: local
-
   lnd_1:
-    driver: local
-
-  lnd_1_rpc:
     driver: local
 
   blockchain:

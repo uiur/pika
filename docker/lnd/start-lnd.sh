@@ -38,34 +38,21 @@ set_default() {
    return "$VARIABLE"
 }
 
-# Set default variables if needed.
-RPCUSER=$(set_default "$RPCUSER" "devuser")
-RPCPASS=$(set_default "$RPCPASS" "devpass")
-DEBUG=$(set_default "$DEBUG" "debug")
-NETWORK=$(set_default "$NETWORK" "simnet")
-CHAIN=$(set_default "$CHAIN" "bitcoin")
-BACKEND="btcd"
-if [[ "$CHAIN" == "litecoin" ]]; then
-    BACKEND="ltcd"
-fi
-
-mkdir -p /lnd_rpc
+NETWORK=$(set_default "$NETWORK" "testnet")
 
 exec lnd \
     --noencryptwallet \
     --logdir="/data" \
-    "--$CHAIN.active" \
-    "--$CHAIN.$NETWORK" \
-    "--$CHAIN.node"="btcd" \
-    "--$BACKEND.rpccert"="/btcd_rpc/rpc.cert" \
-    "--$BACKEND.rpchost"="btcd" \
-    "--$BACKEND.rpcuser"="$RPCUSER" \
-    "--$BACKEND.rpcpass"="$RPCPASS" \
+    "--bitcoin.active" \
+    "--bitcoin.$NETWORK" \
+    "--bitcoin.node"="btcd" \
+    "--btcd.rpccert"="/rpc/rpc.cert" \
+    "--btcd.rpchost"="btcd" \
+    "--btcd.rpcuser"="$RPCUSER" \
+    "--btcd.rpcpass"="$RPCPASS" \
     --rpclisten=0.0.0.0:10009 \
     --restlisten=0.0.0.0:8080 \
-    --tlscertpath=/lnd_rpc/tls.cert \
-    --tlskeypath=/lnd_rpc/tls.key \
-    --tlsextradomain="$HOSTNAME" \
-    --adminmacaroonpath=/lnd_rpc/admin.macaroon \
-    --debuglevel="$DEBUG" \
+    --tlscertpath=/rpc/tls.cert \
+    --tlskeypath=/rpc/tls.key \
+    --tlsextradomain="lnd" \
     "$@"
