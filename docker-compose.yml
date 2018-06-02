@@ -28,6 +28,7 @@ services:
       MINING_ADDRESS:
       RPCUSER: devuser
       RPCPASS: devpass
+      NETWORK: simnet
     command: ./start-btcd.sh --simnet --datadir=/data
 
   lnd_0:

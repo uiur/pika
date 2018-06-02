@@ -41,12 +41,11 @@ set_default() {
 # Set default variables if needed.
 RPCUSER=$(set_default "$RPCUSER" "devuser")
 RPCPASS=$(set_default "$RPCPASS" "devpass")
-NETWORK=$(set_default "$NETWORK" "simnet")
+NETWORK=$(set_default "$NETWORK" "testnet")
 
 exec btcctl \
     "--$NETWORK" \
     --rpccert="/rpc/rpc.cert" \
     --rpcuser="$RPCUSER" \
     --rpcpass="$RPCPASS" \
-    --rpcserver="rpcserver" \
     "$@"
