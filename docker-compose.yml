@@ -22,12 +22,13 @@ services:
     build:
       context: docker/btcd/
     volumes:
-      - btcd_rpc:/btcd_rpc
+      - btcd_rpc:/rpc
       - blockchain:/data
     environment:
-      NETWORK: simnet
-      DEBUG: info
       MINING_ADDRESS:
+      RPCUSER: devuser
+      RPCPASS: devpass
+    command: ./start-btcd.sh --simnet --datadir=/data
 
   lnd_0:
     hostname: lnd_0
