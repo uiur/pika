@@ -12,6 +12,7 @@ spec:
       containers:
       - name: btcd
         image: gcr.io/uiu-server/btcd
+        imagePullPolicy: "Always"
         env:
           - name: RPCUSER
             valueFrom:

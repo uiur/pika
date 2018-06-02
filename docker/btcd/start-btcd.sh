@@ -20,7 +20,8 @@ PARAMS=$(echo \
   "--rpcpass=$RPCPASS" \
   --rpclisten=0.0.0.0 \
   --rpccert=/rpc/rpc.cert \
-  --rpckey=/rpc/rpc.key
+  --rpckey=/rpc/rpc.key \
+  --datadir=/data
 )
 
 PARAMS="$PARAMS $@"
