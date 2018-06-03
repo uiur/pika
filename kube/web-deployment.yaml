@@ -23,7 +23,7 @@ spec:
             value: production
 
           - name: RAILS_LOG_TO_STDOUT
-            value: 1
+            value: "1"
 
           - name: LND_RPC_CERT
             value: /rpc/rpc.cert

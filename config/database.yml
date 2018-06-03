@@ -14,3 +14,10 @@ development:
 test:
   <<: *default
   database: pika_test
+  host: localhost
+  username:
+  password:
+
+production:
+  <<: *default
+  database: pika
