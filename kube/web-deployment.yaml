@@ -31,6 +31,21 @@ spec:
           - name: LND_MACAROON
             value: /lnd/admin.macaroon
 
+          - name: DATABASE_HOST
+            value: 127.0.0.1
+
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql-db-credentials
+                key: username
+
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql-db-credentials
+                key: password
+
         ports:
           - containerPort: 3000
 
@@ -42,6 +57,22 @@ spec:
           - name: lnd
             mountPath: /lnd
             readOnly: true
+            containers:
+
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=uiu-server:asia-northeast1:pika=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+
+        resources:
+          requests:
+            cpu: 0
+
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
 
       volumes:
         - name: rpc
@@ -51,3 +82,7 @@ spec:
         - name: lnd
           secret:
             secretName: lnd-rpc
+
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
