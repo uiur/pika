@@ -1,8 +1,6 @@
 require 'rpc_services_pb'
 
 class LndClient
-  LND_RPC_DIR = '/lnd_0_rpc'
-
   class MacaroonInterceptor < GRPC::ClientInterceptor
     attr_reader :macaroon
 
@@ -21,14 +19,14 @@ class LndClient
     ENV["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
 
     @client ||= Lnrpc::Lightning::Stub.new(
-      'lnd_0:10009',
-      GRPC::Core::ChannelCredentials.new(File.read("#{LND_RPC_DIR}/tls.cert")),
+      "#{lnd_host}:10009",
+      GRPC::Core::ChannelCredentials.new(File.read(rpc_cert)),
       interceptors: [MacaroonInterceptor.new(macaroon)]
     )
   end
 
   def self.macaroon
-    Digest.hexencode(File.read("#{LND_RPC_DIR}/admin.macaroon"))
+    Digest.hexencode(File.read(macaroon_path))
   end
 
   def self.get_info
@@ -49,5 +47,19 @@ class LndClient
     )
 
     shared.send_payment_sync(request)
+  end
+
+  private
+
+  def self.rpc_cert
+    ENV.fetch('LND_RPC_CERT')
+  end
+
+  def self.lnd_host
+    ENV.fetch('LND_HOST') { 'lnd' }
+  end
+
+  def self.macaroon_path
+    ENV.fetch('LND_MACAROON')
   end
 end
