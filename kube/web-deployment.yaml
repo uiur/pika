@@ -1,35 +1,38 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: lnd
+  name: web
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: lnd
+        app: web
     spec:
       containers:
-      - name: lnd
-        image: gcr.io/uiu-server/lnd
+      - name: web
+        image: gcr.io/uiu-server/pika-web
         imagePullPolicy: "Always"
+
         resources:
           requests:
             cpu: 50m
 
         env:
-          - name: RPCUSER
-            valueFrom:
-              secretKeyRef:
-                name: btcd-rpc-user
-                key: user
-          - name: RPCPASS
-            valueFrom:
-              secretKeyRef:
-                name: btcd-rpc-user
-                key: password
+          - name: RAILS_ENV
+            value: production
+
+          - name: RAILS_LOG_TO_STDOUT
+            value: 1
+
+          - name: LND_RPC_CERT
+            value: /rpc/rpc.cert
+
+          - name: LND_MACAROON
+            value: /lnd/admin.macaroon
+
         ports:
-          - containerPort: 9735 # peer
+          - containerPort: 3000
 
         volumeMounts:
           - name: rpc
@@ -37,7 +40,8 @@ spec:
             readOnly: true
 
           - name: lnd
-            mountPath: /root/.lnd
+            mountPath: /lnd
+            readOnly: true
 
       volumes:
         - name: rpc
@@ -45,5 +49,5 @@ spec:
             secretName: btcd-rpc
 
         - name: lnd
-          gcePersistentDisk:
-            pdName: lnd
+          secret:
+            secretName: lnd-rpc

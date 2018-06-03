@@ -13,3 +13,7 @@ spec:
     protocol: TCP
     port: 9735
     targetPort: 9735
+  - name: rpc
+    protocol: TCP
+    port: 10009
+    targetPort: 10009
