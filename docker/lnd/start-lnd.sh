@@ -52,6 +52,6 @@ exec lnd \
     "--btcd.rpcpass"="$RPCPASS" \
     --rpclisten=0.0.0.0:10009 \
     --restlisten=0.0.0.0:8080 \
-    --tlscertpath=/lnd_rpc_cert/rpc.cert \
-    --tlskeypath=/lnd_rpc_cert/rpc.key \
+    --tlscertpath=/lnd_rpc_cert/tls.cert \
+    --tlskeypath=/lnd_rpc_cert/tls.key \
     "$@"
