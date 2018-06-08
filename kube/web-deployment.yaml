@@ -26,7 +26,7 @@ spec:
             value: "1"
 
           - name: LND_RPC_CERT
-            value: /rpc/rpc.cert
+            value: /lnd_rpc_cert/tls.cert
 
           - name: LND_MACAROON
             value: /lnd/admin.macaroon
@@ -46,6 +46,12 @@ spec:
                 name: cloudsql-db-credentials
                 key: password
 
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: web
+                key: secret_key_base
+
         ports:
           - containerPort: 3000
 
@@ -57,7 +63,10 @@ spec:
           - name: lnd
             mountPath: /lnd
             readOnly: true
-            containers:
+
+          - name: lnd-rpc-cert
+            mountPath: /lnd_rpc_cert
+            readOnly: true
 
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
@@ -82,6 +91,10 @@ spec:
         - name: lnd
           secret:
             secretName: lnd-rpc
+
+        - name: lnd-rpc-cert
+          secret:
+            secretName: lnd-rpc-cert
 
         - name: cloudsql-instance-credentials
           secret:

@@ -23,11 +23,13 @@ spec:
               secretKeyRef:
                 name: btcd-rpc-user
                 key: user
+
           - name: RPCPASS
             valueFrom:
               secretKeyRef:
                 name: btcd-rpc-user
                 key: password
+
         ports:
           - containerPort: 9735 # peer
 
@@ -39,6 +41,10 @@ spec:
           - name: lnd
             mountPath: /root/.lnd
 
+          - name: lnd-rpc-cert
+            mountPath: /lnd_rpc_cert
+            readOnly: true
+
       volumes:
         - name: rpc
           secret:
@@ -47,3 +53,7 @@ spec:
         - name: lnd
           gcePersistentDisk:
             pdName: lnd
+
+        - name: lnd-rpc-cert
+          secret:
+            secretName: lnd-rpc-cert
