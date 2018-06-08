@@ -54,4 +54,5 @@ exec lnd \
     --restlisten=0.0.0.0:8080 \
     --tlscertpath=/lnd_rpc_cert/tls.cert \
     --tlskeypath=/lnd_rpc_cert/tls.key \
+    --autopilot.active \
     "$@"
