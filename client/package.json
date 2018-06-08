@@ -27,7 +27,10 @@
     "build": "webpack"
   },
   "dependencies": {
+    "bn.js": "uiureo/bn.js",
+    "buffer": "^5.1.0",
     "classnames": "^2.2.5",
+    "lightning-invoice": "^0.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
   }
