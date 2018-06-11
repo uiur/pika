@@ -10,12 +10,17 @@ services:
     command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/app
-      - lnd_0_rpc:/lnd_0_rpc
-      - lnd_1_rpc:/lnd_1_rpc
+      - btcd_rpc:/rpc
+      - lnd_0:/lnd
+      - lnd_rpc_cert_0:/lnd_rpc_cert
     ports:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      LND_HOST: lnd_0
+      LND_RPC_CERT: /lnd_rpc_cert/tls.cert
+      LND_MACAROON: /lnd/admin.macaroon
 
   btcd:
     image: btcd
@@ -38,6 +43,7 @@ services:
     volumes:
       - btcd_rpc:/rpc
       - lnd_0:/root/.lnd/
+      - lnd_rpc_cert_0:/lnd_rpc_cert
     environment:
       NETWORK: simnet
       DEBUG: debug
@@ -53,6 +59,7 @@ services:
     volumes:
       - btcd_rpc:/rpc
       - lnd_1:/root/.lnd/
+      - lnd_rpc_cert_1:/lnd_rpc_cert
     environment:
       NETWORK: simnet
       DEBUG: debug
@@ -69,6 +76,12 @@ volumes:
     driver: local
 
   lnd_1:
+    driver: local
+
+  lnd_rpc_cert_0:
+    driver: local
+
+  lnd_rpc_cert_1:
     driver: local
 
   blockchain:
