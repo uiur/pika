@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   end
   resources :payments
   resource :wallet
+
+  get :/, to: 'root#index'
 end
