@@ -6,6 +6,7 @@ metadata:
     app: lnd
 spec:
   type: LoadBalancer
+  loadBalancerIP: '35.200.40.52'
   selector:
     app: lnd
   ports:
