@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 import api from './api'
 // @ts-ignore
 import * as cx from 'classnames'
+// @ts-ignore
+import { decode } from 'lightning-invoice'
 
 const SATOSHI = 100 * 1000 * 1000
 const JPY_BTC = 807793
@@ -10,7 +12,8 @@ const JPY_BTC = 807793
 interface State {
   balance: number,
   paymentRequest: string,
-  tab: number
+  tab: number,
+  error: string
 }
 
 const TOKEN_KEY = 'pika_token'
@@ -37,7 +40,8 @@ export default class Main extends React.Component<{}, State> {
     this.state = {
       balance: 0,
       paymentRequest: '',
-      tab: 0
+      tab: 0,
+      error: ''
     }
   }
 
@@ -59,7 +63,9 @@ export default class Main extends React.Component<{}, State> {
       }
     })
 
-    console.log(res)
+    if (res.err) {
+      this.setState({ error: `${res.err.message}: ${res.body.error}` })
+    }
   }
 
   onChange (e: any) {
@@ -73,7 +79,22 @@ export default class Main extends React.Component<{}, State> {
     this.setState({ tab: n })
   }
 
+  tryDecodePaymentRequest (paymentRequest: string): any {
+    console.log(paymentRequest)
+    let decoded
+    try {
+      decoded = decode(paymentRequest)
+    } catch (e) {
+      console.error(e)
+      return null
+    }
+
+    return decoded
+  }
+
   render () {
+    const decoded = this.tryDecodePaymentRequest(this.state.paymentRequest)
+
     return (
       <div>
         <div className='head'>
@@ -111,6 +132,9 @@ export default class Main extends React.Component<{}, State> {
                   <label>送金コード</label>
                   <input type='text' className='form-control' placeholder='ln...' onChange={ this.onChange.bind(this) } />
                 </div>
+
+                <p>{ decoded && decoded.amount }</p>
+                <p>{ this.state.error }</p>
 
                 <button type='button' className='btn btn-primary btn-block btn-lg btn-pay' onClick={ this.onClick.bind(this) }>送金する</button>
               </form>

@@ -15,9 +15,19 @@ class PaymentsController < ApplicationController
       # TODO: atomic update
       current_account.update!(balance: current_account.balance - amount)
       res = LndClient.pay(params[:payment_request])
+
+      if res.payment_error
+        render({
+          json: {
+            error: res.payment_error
+          },
+          status: :internal_server_error
+        })
+
+        return
+      end
     end
 
-    # error: res.payment_error
     render json: {}, status: :ok
   end
 end
