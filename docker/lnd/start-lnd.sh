@@ -56,4 +56,6 @@ exec lnd \
     --tlskeypath=/lnd_rpc_cert/tls.key \
     --autopilot.active \
     "--externalip"="$EXTERNAL_IP" \
+    "--alias"="uiu" \
+    "--color"="#1965AB" \
     "$@"
