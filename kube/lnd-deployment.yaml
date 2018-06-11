@@ -30,6 +30,9 @@ spec:
                 name: btcd-rpc-user
                 key: password
 
+          - name: EXTERNAL_IP
+            value: '35.200.40.52'
+
         ports:
           - containerPort: 9735 # peer
 
