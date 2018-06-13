@@ -2,8 +2,6 @@
 import { Buffer } from 'buffer'
 global.Buffer = Buffer
 
-console.log(require('buffer').Buffer)
-
 // @ts-ignore
 import * as Frisbee from 'frisbee'
 import Main from './main'

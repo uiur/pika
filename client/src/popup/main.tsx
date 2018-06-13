@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import api from '../lib/api'
+import { getToken } from '../lib/client'
 // @ts-ignore
 import * as cx from 'classnames'
 // @ts-ignore
@@ -14,23 +15,6 @@ interface State {
   paymentRequest: string,
   tab: number,
   error: string
-}
-
-const TOKEN_KEY = 'pika_token'
-
-async function createAccount(): Promise<string> {
-  const res = await api.post('/accounts')
-  if (res.err) throw res.err
-
-  window.localStorage.setItem(TOKEN_KEY, res.body.token)
-
-  return res.body.token
-}
-
-async function getToken(): Promise<string> {
-  let token = window.localStorage.getItem(TOKEN_KEY)
-  if (token) return token
-  await createAccount()
 }
 
 export default class Main extends React.Component<{}, State> {
@@ -47,7 +31,7 @@ export default class Main extends React.Component<{}, State> {
 
   async componentDidMount () {
     const token = await getToken()
-    const res = await api.get('/accounts/me', { headers: { 'Authorization': `Bearer ${token}` } })
+    const res = await api.jwt(token).get('/accounts/me')
     if (res.err) throw res.err
 
     this.setState({ balance: res.body.balance })
@@ -56,8 +40,7 @@ export default class Main extends React.Component<{}, State> {
   async onClick () {
     const token = await getToken()
 
-    const res = await api.post('/payments', {
-      headers: { 'Authorization': `Bearer ${token}` },
+    const res = await api.jwt(token).post('/payments', {
       body: {
         payment_request: this.state.paymentRequest
       }
