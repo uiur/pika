@@ -3,11 +3,16 @@ const WebpackNotifierPlugin = require('webpack-notifier')
 
 module.exports = {
   mode: 'development',
-  entry: ['./src/index.tsx', './src/index.scss'],
+  entry: {
+    popup: './src/index.tsx',
+    css: './src/index.scss',
+    content: './src/content/index.ts',
+    background: './src/background/index.ts'
+  },
   devtool: "source-map",
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
 
   resolve: {
