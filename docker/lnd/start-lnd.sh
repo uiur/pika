@@ -55,6 +55,7 @@ exec lnd \
     --tlscertpath=/lnd_rpc_cert/tls.cert \
     --tlskeypath=/lnd_rpc_cert/tls.key \
     --autopilot.active \
+    --autopilot.maxchannels=10 \
     "--externalip"="$EXTERNAL_IP" \
     "--alias"="uiu" \
     "--color"="#1965AB" \
