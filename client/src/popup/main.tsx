@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import api from './api'
+import api from '../lib/api'
 // @ts-ignore
 import * as cx from 'classnames'
 // @ts-ignore

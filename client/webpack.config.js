@@ -4,7 +4,7 @@ const WebpackNotifierPlugin = require('webpack-notifier')
 module.exports = {
   mode: 'development',
   entry: {
-    popup: './src/index.tsx',
+    popup: './src/popup/index.tsx',
     css: './src/index.scss',
     content: './src/content/index.ts',
     background: './src/background/index.ts'
