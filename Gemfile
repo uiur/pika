@@ -14,6 +14,8 @@ gem 'puma', '~> 3.7'
 gem 'grpc'
 
 gem 'jwt'
+gem 'rack-timeout'
+
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
